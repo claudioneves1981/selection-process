@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface UserRepository extends JpaRepository<User, Long>{
 
     @Query("SELECT obj FROM User obj WHERE obj.salary >= :minSalary AND obj.salary <= :maxSalary")
@@ -13,6 +15,9 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     @Query("SELECT obj FROM User obj WHERE LOWER(obj.name) LIKE LOWER(CONCAT('%',:name,'%'))")
     Page<User> searchName(String name, Pageable pageable);
+
+    @Query("SELECT obj FROM User obj WHERE :baseSalary >= obj.salary")
+    List<User> searchBaseSalaryGreaterUserSalary(Double baseSalary);
 
     Page<User> findBySalaryBetween(Double minSalary, Double maxSalary, Pageable pageable);
 

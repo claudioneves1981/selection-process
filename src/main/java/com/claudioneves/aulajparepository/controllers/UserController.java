@@ -1,7 +1,9 @@
 package com.claudioneves.aulajparepository.controllers;
 
+import com.claudioneves.aulajparepository.dto.SelectedCandidate;
 import com.claudioneves.aulajparepository.entities.User;
 import com.claudioneves.aulajparepository.repositories.UserRepository;
+import com.claudioneves.aulajparepository.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,27 +22,36 @@ public class UserController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserService service;
+
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
-        List<User> result = repository.findAll();
+        List<User> result = service.findAll();
         return ResponseEntity.ok(result);
     }
 
     @GetMapping(value = "/page")
     public ResponseEntity<Page<User>> findAll(Pageable pageable) {
-        Page<User> result = repository.findAll(pageable);
+        Page<User> result = service.findAll(pageable);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping(value = "/search-salary")
     public ResponseEntity<Page<User>> searchBySalary(@RequestParam(defaultValue = "0") Double minSalary, @RequestParam(defaultValue = "1000000000000") Double maxSalary, Pageable pageable) {
-        Page<User> result = repository.searchSalary(minSalary, maxSalary, pageable);
+        Page<User> result = service.searchSalary(minSalary, maxSalary, pageable);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping(value = "/search-name")
     public ResponseEntity<Page<User>> searchByName(@RequestParam(defaultValue = "") String name, Pageable pageable) {
-        Page<User> result = repository.searchName(name,pageable);
+        Page<User> result = service.searchName(name,pageable);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping(value = "/search-candidates")
+    public ResponseEntity<List<SelectedCandidate>> searchByCandidates() {
+        List<SelectedCandidate> result = service.searchBaseSalaryGreaterUserSalary();
         return ResponseEntity.ok(result);
     }
 
