@@ -2,8 +2,8 @@ package com.claudioneves.aulajparepository.services;
 
 import com.claudioneves.aulajparepository.dto.ContactAttempt;
 import com.claudioneves.aulajparepository.dto.SelectedCandidate;
-import com.claudioneves.aulajparepository.entities.User;
-import com.claudioneves.aulajparepository.repositories.UserRepository;
+import com.claudioneves.aulajparepository.entities.Candidate;
+import com.claudioneves.aulajparepository.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,46 +14,42 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class UserService {
+public class CandidateService {
 
     @Autowired
-    private UserRepository userRepository;
+    private CandidateRepository candidateRepository;
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public List<Candidate> findAll(){
+        return candidateRepository.findAll();
     }
 
-    public Page<User> findAll(Pageable pageable){
-        return userRepository.findAll(pageable);
+    public Page<Candidate> findAll(Pageable pageable){
+        return candidateRepository.findAll(pageable);
     }
 
-    public Page<User> searchSalary(Double minSalary, Double maxSalary, Pageable pageable){
-        return userRepository.searchSalary(minSalary,maxSalary,pageable);
+    public Page<Candidate> searchSalary(Double minSalary, Double maxSalary, Pageable pageable){
+        return candidateRepository.searchSalary(minSalary,maxSalary,pageable);
     }
 
-    public Page<User> searchName(String name, Pageable pageable){
-         return userRepository.searchName(name, pageable);
+    public Page<Candidate> searchName(String name, Pageable pageable){
+         return candidateRepository.searchName(name, pageable);
 
     }
 
+    public List<SelectedCandidate> searchBaseSalaryGreaterUserSalary(Double baseSalary) {
 
-
-    public List<SelectedCandidate> searchBaseSalaryGreaterUserSalary() {
-
-        Double baseSalary = 5000.0;
-        List<User> candidates = userRepository.searchBaseSalaryGreaterUserSalary(baseSalary);
+        List<Candidate> candidates = candidateRepository.searchBaseSalaryGreaterUserSalary(baseSalary);
         List<SelectedCandidate> selectedCandidatesList = new ArrayList<>();
 
-        int selectedCandidates = 0;
         int actualCandidate = 0;
-        double pretendingSalary = 0D;
+        double pretendingSalary;
 
 
         while (actualCandidate < candidates.size()) {
 
-            User candidate = candidates.get(actualCandidate);
+            Candidate candidate = candidates.get(actualCandidate);
             pretendingSalary = candidate.getSalary();
-            selectedCandidatesList.add(chekingCandidate(pretendingSalary, candidate, baseSalary));
+            selectedCandidatesList.add(checkingCandidate(pretendingSalary, candidate, baseSalary));
             if (selectedCandidatesList.size() == 5){
                 break;
             }
@@ -63,7 +59,7 @@ public class UserService {
         return selectedCandidatesList;
     }
 
-   public SelectedCandidate chekingCandidate(double pretendingSalary, User candidate, Double baseSalary) {
+   public SelectedCandidate checkingCandidate(double pretendingSalary, Candidate candidate, Double baseSalary) {
 
         SelectedCandidate selectedCandidate = new SelectedCandidate();
 
@@ -71,6 +67,7 @@ public class UserService {
 
             selectedCandidate.setCandidate(candidate.getName());
             selectedCandidate.setMessage("O candidato foi selecionado para a vaga, LIGAR PARA O CANDIDATO");
+            selectedCandidate.setSalary(candidate.getSalary());
             selectedCandidate.setContactAttempt(gettingInTouch());
 
 
@@ -79,6 +76,7 @@ public class UserService {
 
             selectedCandidate.setCandidate(candidate.getName());
             selectedCandidate.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
+            selectedCandidate.setSalary(candidate.getSalary());
             selectedCandidate.setContactAttempt(gettingInTouch());
 
         } else {
@@ -95,8 +93,8 @@ public class UserService {
 
 
         int realizedAttempts = 1;
-        boolean continueAttempt = true;
-        boolean answered = false;
+        boolean continueAttempt;
+        boolean answered;
         ContactAttempt contactAttempt = new ContactAttempt();
         do{
 
