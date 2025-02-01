@@ -3,7 +3,7 @@ package com.claudioneves.aulajparepository.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_users")
+@Table(name = "tb_candidates")
 public class Candidate {
 
     @Id
@@ -13,15 +13,17 @@ public class Candidate {
     private String name;
     private String email;
     private Double salary;
+    private String phone;
 
     public Candidate() {
     }
 
-    public Candidate(Long id, String name, String email, Double salary) {
+    public Candidate(Long id, String name, String email, Double salary, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.salary = salary;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -54,5 +56,13 @@ public class Candidate {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

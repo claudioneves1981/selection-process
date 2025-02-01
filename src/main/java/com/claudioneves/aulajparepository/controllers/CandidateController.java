@@ -4,10 +4,12 @@ import com.claudioneves.aulajparepository.dto.SelectedCandidate;
 import com.claudioneves.aulajparepository.entities.Candidate;
 import com.claudioneves.aulajparepository.repositories.CandidateRepository;
 import com.claudioneves.aulajparepository.services.CandidateService;
+import org.hibernate.annotations.processing.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,9 +51,15 @@ public class CandidateController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping(value = "/search-candidates")
-    public ResponseEntity<List<SelectedCandidate>> searchByCandidates(@RequestParam(defaultValue = "2000") Double baseSalary) {
-        List<SelectedCandidate> result = service.searchBaseSalaryGreaterUserSalary(baseSalary);
+    @GetMapping(value = "/select-candidates-by-options")
+    public ResponseEntity<List<SelectedCandidate>> selectCandidates(@RequestParam(defaultValue = "2000") Double baseSalary, @RequestParam(defaultValue = "-") String DDD) {
+        List<SelectedCandidate> result = service.searchByOptions(baseSalary, DDD);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping(value = "/search-by-ddd")
+    public ResponseEntity<Page<Candidate>> searchByDDD(@RequestParam String DDD, Pageable pageable) {
+        Page<Candidate> result = service.searchByDDD(DDD, pageable);
         return ResponseEntity.ok(result);
     }
 

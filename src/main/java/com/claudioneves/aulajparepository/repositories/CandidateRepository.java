@@ -16,8 +16,12 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long>{
     @Query("SELECT obj FROM Candidate obj WHERE LOWER(obj.name) LIKE LOWER(CONCAT('%',:name,'%'))")
     Page<Candidate> searchName(String name, Pageable pageable);
 
-    @Query("SELECT obj FROM Candidate obj WHERE :baseSalary >= obj.salary")
-    List<Candidate> searchBaseSalaryGreaterUserSalary(Double baseSalary);
+    @Query("SELECT obj FROM Candidate obj WHERE :baseSalary >= obj.salary AND (obj.phone LIKE (CONCAT('%(',:DDD,')%')) OR obj.phone LIKE (CONCAT('%',:DDD,'%')))")
+    List<Candidate> searchByOptions(Double baseSalary, String DDD);
+
+    @Query("SELECT obj FROM Candidate obj WHERE obj.phone LIKE (CONCAT('%(',:DDD,')%'))")
+    Page<Candidate> searchByDDD(String DDD, Pageable pageable);
+
 
     Page<Candidate> findBySalaryBetween(Double minSalary, Double maxSalary, Pageable pageable);
 

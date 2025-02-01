@@ -19,6 +19,11 @@ public class CandidateService {
     @Autowired
     private CandidateRepository candidateRepository;
 
+    public Page<Candidate> searchByDDD(String DDD, Pageable pageable){
+        return candidateRepository.searchByDDD(DDD,pageable);
+    }
+
+
     public List<Candidate> findAll(){
         return candidateRepository.findAll();
     }
@@ -36,9 +41,9 @@ public class CandidateService {
 
     }
 
-    public List<SelectedCandidate> searchBaseSalaryGreaterUserSalary(Double baseSalary) {
+    public List<SelectedCandidate> searchByOptions(Double baseSalary, String DDD) {
 
-        List<Candidate> candidates = candidateRepository.searchBaseSalaryGreaterUserSalary(baseSalary);
+        List<Candidate> candidates = candidateRepository.searchByOptions(baseSalary, DDD);
         List<SelectedCandidate> selectedCandidatesList = new ArrayList<>();
 
         int actualCandidate = 0;
@@ -48,10 +53,13 @@ public class CandidateService {
         while (actualCandidate < candidates.size()) {
 
             Candidate candidate = candidates.get(actualCandidate);
-            pretendingSalary = candidate.getSalary();
-            selectedCandidatesList.add(checkingCandidate(pretendingSalary, candidate, baseSalary));
-            if (selectedCandidatesList.size() == 5){
-                break;
+
+            if(candidate.getPhone().indexOf(DDD) == 1 || candidate.getPhone().indexOf(DDD) == 10 ) {
+                pretendingSalary = candidate.getSalary();
+                selectedCandidatesList.add(checkingCandidate(pretendingSalary, candidate, baseSalary));
+                if (selectedCandidatesList.size() == 5) {
+                    break;
+                }
             }
             actualCandidate++;
         }
@@ -68,7 +76,7 @@ public class CandidateService {
             selectedCandidate.setCandidate(candidate.getName());
             selectedCandidate.setMessage("O candidato foi selecionado para a vaga, LIGAR PARA O CANDIDATO");
             selectedCandidate.setSalary(candidate.getSalary());
-            selectedCandidate.setContactAttempt(gettingInTouch());
+            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
 
 
 
@@ -77,7 +85,7 @@ public class CandidateService {
             selectedCandidate.setCandidate(candidate.getName());
             selectedCandidate.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
             selectedCandidate.setSalary(candidate.getSalary());
-            selectedCandidate.setContactAttempt(gettingInTouch());
+            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
 
         } else {
 
@@ -89,7 +97,7 @@ public class CandidateService {
         return selectedCandidate;
     }
 
-    public ContactAttempt gettingInTouch(){
+    public ContactAttempt gettingInTouch(String phone){
 
 
         int realizedAttempts = 1;
@@ -110,10 +118,12 @@ public class CandidateService {
 
 
         contactAttempt.setAttempts(realizedAttempts);
+        contactAttempt.setPhoneAttempted(phone);
         if(answered)
             contactAttempt.setMessage("CONSEGUIMOS CONTATO  NA " + realizedAttempts + " TENTATIVA");
         else
             contactAttempt.setMessage("NÃO CONSEGUIMOS CONTATO NÚMERO MAXIMO TENTATIVAS " + realizedAttempts + " REALIZADAS");
+
 
         return contactAttempt;
     }
