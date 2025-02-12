@@ -74,7 +74,7 @@ public class CandidateService {
 
         SelectedCandidate selectedCandidate;
 
-        if(baseSalary > 5000) {
+        if(pretendingSalary > 5000) {
 
             Manager manager = new Manager();
 
