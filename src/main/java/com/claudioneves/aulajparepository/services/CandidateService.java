@@ -1,6 +1,8 @@
 package com.claudioneves.aulajparepository.services;
 
 import com.claudioneves.aulajparepository.dto.ContactAttempt;
+import com.claudioneves.aulajparepository.dto.Manager;
+import com.claudioneves.aulajparepository.dto.Salesman;
 import com.claudioneves.aulajparepository.dto.SelectedCandidate;
 import com.claudioneves.aulajparepository.entities.Candidate;
 import com.claudioneves.aulajparepository.repositories.CandidateRepository;
@@ -69,28 +71,75 @@ public class CandidateService {
 
    public SelectedCandidate checkingCandidate(double pretendingSalary, Candidate candidate, Double baseSalary) {
 
-        SelectedCandidate selectedCandidate = new SelectedCandidate();
 
-        if (baseSalary > pretendingSalary) {
+        SelectedCandidate selectedCandidate;
 
-            selectedCandidate.setCandidate(candidate.getName());
-            selectedCandidate.setMessage("O candidato foi selecionado para a vaga, LIGAR PARA O CANDIDATO");
-            selectedCandidate.setSalary(candidate.getSalary());
-            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
+        if(baseSalary > 5000) {
+
+            Manager manager = new Manager();
+
+            if (baseSalary > pretendingSalary) {
+
+                manager.setCandidate(candidate.getName());
+                manager.setMessage("O candidato foi selecionado para a vaga de Gerente, LIGAR PARA O CANDIDATO");
+                manager.setSalary(candidate.getSalary());
+                manager.setContactAttempt(gettingInTouch(candidate.getPhone()));
+                manager.setVacancyCode("001");
+                manager.setComission(1200);
+                selectedCandidate = manager;
+
+
+            } else if (baseSalary == pretendingSalary) {
+
+                manager.setCandidate(candidate.getName());
+                manager.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
+                manager.setSalary(candidate.getSalary());
+                manager.setVacancyCode("001");
+                manager.setContactAttempt(gettingInTouch(candidate.getPhone()));
+                selectedCandidate = manager;
+
+            } else {
+
+                manager.setCandidate(candidate.getName());
+                manager.setVacancyCode("001");
+                manager.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
+                selectedCandidate = manager;
+
+            }
+
+        }else{
+
+            Salesman salesman = new Salesman();
+
+            if (baseSalary > pretendingSalary) {
+
+                salesman.setCandidate(candidate.getName());
+                salesman.setMessage("O candidato foi selecionado para a vaga de Vendedor, LIGAR PARA O CANDIDATO");
+                salesman.setSalary(candidate.getSalary());
+                salesman.setContactAttempt(gettingInTouch(candidate.getPhone()));
+                salesman.setVacancyCode("001");
+                salesman.setPercentPerSold(10);
+                selectedCandidate = salesman;
 
 
 
-        } else if (baseSalary == pretendingSalary) {
+            } else if (baseSalary == pretendingSalary) {
 
-            selectedCandidate.setCandidate(candidate.getName());
-            selectedCandidate.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
-            selectedCandidate.setSalary(candidate.getSalary());
-            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
+                salesman.setCandidate(candidate.getName());
+                salesman.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
+                salesman.setSalary(candidate.getSalary());
+                salesman.setVacancyCode("001");
+                salesman.setContactAttempt(gettingInTouch(candidate.getPhone()));
+                selectedCandidate = salesman;
 
-        } else {
+            } else {
 
-            selectedCandidate.setCandidate(candidate.getName());
-            selectedCandidate.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
+                salesman.setCandidate(candidate.getName());
+                salesman.setVacancyCode("001");
+                salesman.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
+                selectedCandidate = salesman;
+
+            }
 
         }
 

@@ -1,26 +1,25 @@
 package com.claudioneves.aulajparepository.dto;
 
-import java.util.List;
 
-public class SelectedCandidate {
+public sealed abstract class SelectedCandidate permits Manager, Salesman{
 
-    private String candidate;
-    private String message;
-    private ContactAttempt contactAttempt;
-    private Double salary;
+    protected String vacancyCode;
+    protected String candidate;
+    protected String message;
+    protected ContactAttempt contactAttempt;
+    protected Double salary;
 
-
-
-    public SelectedCandidate() {
-    }
-
-
-    public SelectedCandidate(String candidate, String message, ContactAttempt contactAttempt, Double salary) {
+    public SelectedCandidate(String vacancyCode, String candidate, String message, ContactAttempt contactAttempt, Double salary) {
+        this.vacancyCode = vacancyCode;
         this.candidate = candidate;
         this.message = message;
         this.contactAttempt = contactAttempt;
         this.salary = salary;
     }
+
+    public SelectedCandidate() {
+    }
+
 
     public String getCandidate() {
         return candidate;
@@ -53,4 +52,14 @@ public class SelectedCandidate {
     public void setSalary(Double salary) {
         this.salary = salary;
     }
+
+    public String getVacancyCode() {
+        return vacancyCode;
+    }
+
+    public void setVacancyCode(String vacancyCode) {
+        this.vacancyCode = vacancyCode;
+    }
+
+    public abstract double getFullSalary();
 }
