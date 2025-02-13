@@ -1,11 +1,11 @@
-package com.claudioneves.aulajparepository.services;
+package com.claudioneves.selectionprocess.services;
 
-import com.claudioneves.aulajparepository.dto.ContactAttempt;
-import com.claudioneves.aulajparepository.dto.Manager;
-import com.claudioneves.aulajparepository.dto.Salesman;
-import com.claudioneves.aulajparepository.dto.SelectedCandidate;
-import com.claudioneves.aulajparepository.entities.Candidate;
-import com.claudioneves.aulajparepository.repositories.CandidateRepository;
+import com.claudioneves.selectionprocess.dto.ContactAttempt;
+import com.claudioneves.selectionprocess.dto.Manager;
+import com.claudioneves.selectionprocess.dto.Salesman;
+import com.claudioneves.selectionprocess.dto.SelectedCandidate;
+import com.claudioneves.selectionprocess.entities.Candidate;
+import com.claudioneves.selectionprocess.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -118,7 +118,7 @@ public class CandidateService {
                 salesman.setSalary(candidate.getSalary());
                 salesman.setContactAttempt(gettingInTouch(candidate.getPhone()));
                 salesman.setVacancyCode("001");
-                salesman.setPercentPerSold(10);
+                salesman.setPercentPayablePerSold(10);
                 selectedCandidate = salesman;
 
 

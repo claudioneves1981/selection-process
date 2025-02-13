@@ -1,4 +1,4 @@
-package com.claudioneves.aulajparepository.dto;
+package com.claudioneves.selectionprocess.dto;
 
 public class ContactAttempt {
 

@@ -1,4 +1,4 @@
-package com.claudioneves.aulajparepository.entities;
+package com.claudioneves.selectionprocess.entities;
 
 import jakarta.persistence.*;
 

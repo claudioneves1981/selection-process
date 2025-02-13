@@ -1,13 +1,13 @@
-package com.claudioneves.aulajparepository;
+package com.claudioneves.selectionprocess;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AulaJparepositoryApplication {
+public class SelectionProcessApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AulaJparepositoryApplication.class, args);
+		SpringApplication.run(SelectionProcessApplication.class, args);
 	}
 
 }

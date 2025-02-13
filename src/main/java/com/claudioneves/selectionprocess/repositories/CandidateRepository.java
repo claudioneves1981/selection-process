@@ -1,6 +1,6 @@
-package com.claudioneves.aulajparepository.repositories;
+package com.claudioneves.selectionprocess.repositories;
 
-import com.claudioneves.aulajparepository.entities.Candidate;
+import com.claudioneves.selectionprocess.entities.Candidate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

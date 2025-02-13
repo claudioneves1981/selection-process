@@ -1,10 +1,9 @@
-package com.claudioneves.aulajparepository.controllers;
+package com.claudioneves.selectionprocess.controllers;
 
-import com.claudioneves.aulajparepository.dto.SelectedCandidate;
-import com.claudioneves.aulajparepository.entities.Candidate;
-import com.claudioneves.aulajparepository.repositories.CandidateRepository;
-import com.claudioneves.aulajparepository.services.CandidateService;
-import org.hibernate.annotations.processing.Pattern;
+import com.claudioneves.selectionprocess.dto.SelectedCandidate;
+import com.claudioneves.selectionprocess.entities.Candidate;
+import com.claudioneves.selectionprocess.repositories.CandidateRepository;
+import com.claudioneves.selectionprocess.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
