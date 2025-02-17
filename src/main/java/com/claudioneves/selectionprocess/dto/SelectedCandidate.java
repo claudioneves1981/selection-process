@@ -21,6 +21,7 @@ public sealed abstract class SelectedCandidate permits Manager, Salesman{
     }
 
 
+
     public String getCandidate() {
         return candidate;
     }
@@ -61,5 +62,7 @@ public sealed abstract class SelectedCandidate permits Manager, Salesman{
         this.vacancyCode = vacancyCode;
     }
 
-    public abstract double getFullSalary();
+    public abstract String getFullSalary();
+
+
 }

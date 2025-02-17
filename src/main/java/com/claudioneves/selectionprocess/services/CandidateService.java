@@ -6,14 +6,14 @@ import com.claudioneves.selectionprocess.dto.Salesman;
 import com.claudioneves.selectionprocess.dto.SelectedCandidate;
 import com.claudioneves.selectionprocess.entities.Candidate;
 import com.claudioneves.selectionprocess.repositories.CandidateRepository;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class CandidateService {
@@ -48,26 +48,39 @@ public class CandidateService {
         List<Candidate> candidates = candidateRepository.searchByOptions(baseSalary, DDD);
         List<SelectedCandidate> selectedCandidatesList = new ArrayList<>();
 
-        int actualCandidate = 0;
-        double pretendingSalary;
-
-
-        while (actualCandidate < candidates.size()) {
-
-            Candidate candidate = candidates.get(actualCandidate);
+        for(Candidate candidate : candidates) {
 
             if(candidate.getPhone().indexOf(DDD) == 1 || candidate.getPhone().indexOf(DDD) == 10 ) {
-                pretendingSalary = candidate.getSalary();
-                selectedCandidatesList.add(checkingCandidate(pretendingSalary, candidate, baseSalary));
+                double pretendingSalary = candidate.getSalary();
+                SelectedCandidate selectedCandidate = checkingCandidate(pretendingSalary, candidate, baseSalary);
+                selectedCandidatesList.add(selectedCandidate);
                 if (selectedCandidatesList.size() == 5) {
                     break;
                 }
             }
-            actualCandidate++;
+
         }
 
+        messageReturn(selectedCandidatesList);
         return selectedCandidatesList;
     }
+
+        public void messageReturn(List<SelectedCandidate> selectedCandidateList){
+
+
+          for(SelectedCandidate candidate : selectedCandidateList){
+
+                if(candidate.getContactAttempt().getAwnser()){
+
+                    candidate.getContactAttempt().setMessage("CONSEGUIMOS CONTATO  NA " + candidate.getContactAttempt().getAttempts() + " TENTATIVA");
+
+                }else{
+
+                    candidate.getContactAttempt().setMessage("NÃO CONSEGUIMOS CONTATO NÚMERO MAXIMO TENTATIVAS " + candidate.getContactAttempt().getAttempts() + " REALIZADAS");
+                }
+          }
+
+     }
 
    public SelectedCandidate checkingCandidate(double pretendingSalary, Candidate candidate, Double baseSalary) {
 
@@ -159,8 +172,7 @@ public class CandidateService {
             continueAttempt = !answered;
             if(continueAttempt)
                 realizedAttempts++;
-            //else
-           //     System.out.println("CONTATO REALIZADO COM SUCESSO");
+
 
 
         }while(continueAttempt && realizedAttempts < 3);
@@ -168,14 +180,11 @@ public class CandidateService {
 
         contactAttempt.setAttempts(realizedAttempts);
         contactAttempt.setPhoneAttempted(phone);
-        if(answered)
-            contactAttempt.setMessage("CONSEGUIMOS CONTATO  NA " + realizedAttempts + " TENTATIVA");
-        else
-            contactAttempt.setMessage("NÃO CONSEGUIMOS CONTATO NÚMERO MAXIMO TENTATIVAS " + realizedAttempts + " REALIZADAS");
-
-
+        contactAttempt.setAwnser(answered);
         return contactAttempt;
     }
+
+
 
     boolean answer(){
         return new Random().nextInt(3) == 1;

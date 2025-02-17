@@ -1,5 +1,7 @@
 package com.claudioneves.selectionprocess.dto;
 
+import java.text.DecimalFormat;
+
 public non-sealed class Manager extends SelectedCandidate{
 
     private double comission;
@@ -18,12 +20,9 @@ public non-sealed class Manager extends SelectedCandidate{
     }
 
     @Override
-    public double getFullSalary() {
-        return this.salary + this.comission;
-    }
-
-    public double getFullSalary(double extra) {
-        return getFullSalary() + extra;
+    public String getFullSalary() {
+        DecimalFormat df = new DecimalFormat("R$ #.00");
+        return df.format(this.salary + this.comission);
     }
 
     public double getComission() {
@@ -33,6 +32,5 @@ public non-sealed class Manager extends SelectedCandidate{
     public void setComission(double comission) {
         this.comission = comission;
     }
-
 
 }

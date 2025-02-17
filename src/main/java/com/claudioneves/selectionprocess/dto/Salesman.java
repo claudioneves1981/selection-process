@@ -1,5 +1,7 @@
 package com.claudioneves.selectionprocess.dto;
 
+import java.text.DecimalFormat;
+
 public non-sealed class Salesman extends SelectedCandidate {
 
     private double percentPayablePerSold;
@@ -15,13 +17,9 @@ public non-sealed class Salesman extends SelectedCandidate {
     }
 
     @Override
-    public String getVacancyCode(){
-        return "SL" + super.getVacancyCode();
-    }
-
-    @Override
-    public double getFullSalary() {
-        return this.salary;
+    public String getFullSalary() {
+        DecimalFormat df = new DecimalFormat("R$ #.00");
+        return df.format(this.salary);
     }
 
 
@@ -32,5 +30,11 @@ public non-sealed class Salesman extends SelectedCandidate {
     public void setPercentPayablePerSold(double percentPayablePerSold) {
         this.percentPayablePerSold = percentPayablePerSold;
     }
+
+    @Override
+    public String getVacancyCode(){
+        return "SL" + super.getVacancyCode();
+    }
+
 
 }

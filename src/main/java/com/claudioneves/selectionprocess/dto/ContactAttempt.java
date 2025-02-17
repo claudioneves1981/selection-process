@@ -5,15 +5,17 @@ public class ContactAttempt {
     private int attempts;
     private String message;
     private String phoneAttempted;
+    private Boolean awnser;
 
 
     public ContactAttempt() {
     }
 
-    public ContactAttempt(int attempts, String message, String phoneAttempted ) {
+    public ContactAttempt(int attempts, String message, String phoneAttempted, Boolean awnser) {
         this.attempts = attempts;
         this.message = message;
         this.phoneAttempted = phoneAttempted;
+        this.awnser = awnser;
     }
 
     public int getAttempts() {
@@ -39,4 +41,13 @@ public class ContactAttempt {
     public void setPhoneAttempted(String phoneAttempted) {
         this.phoneAttempted = phoneAttempted;
     }
+
+    public Boolean getAwnser() {
+        return awnser;
+    }
+
+    public void setAwnser(Boolean awnser) {
+        this.awnser = awnser;
+    }
+
 }
