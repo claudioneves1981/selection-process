@@ -82,77 +82,17 @@ public class CandidateService {
 
      }
 
-   public SelectedCandidate checkingCandidate(double pretendingSalary, Candidate candidate, Double baseSalary) {
-
+   public SelectedCandidate checkingCandidate(Double pretendingSalary, Candidate candidate, Double baseSalary) {
 
         SelectedCandidate selectedCandidate;
 
         if(pretendingSalary > 5000) {
 
-            Manager manager = new Manager();
-
-            if (baseSalary > pretendingSalary) {
-
-                manager.setCandidate(candidate.getName());
-                manager.setMessage("O candidato foi selecionado para a vaga de Gerente, LIGAR PARA O CANDIDATO");
-                manager.setSalary(candidate.getSalary());
-                manager.setContactAttempt(gettingInTouch(candidate.getPhone()));
-                manager.setVacancyCode("001");
-                manager.setComission(1200);
-                selectedCandidate = manager;
-
-
-            } else if (baseSalary == pretendingSalary) {
-
-                manager.setCandidate(candidate.getName());
-                manager.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
-                manager.setSalary(candidate.getSalary());
-                manager.setVacancyCode("001");
-                manager.setContactAttempt(gettingInTouch(candidate.getPhone()));
-                selectedCandidate = manager;
-
-            } else {
-
-                manager.setCandidate(candidate.getName());
-                manager.setVacancyCode("001");
-                manager.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
-                selectedCandidate = manager;
-
-            }
+            selectedCandidate = checkingFuncition(new Manager(), baseSalary, pretendingSalary ,candidate);
 
         }else{
 
-            Salesman salesman = new Salesman();
-
-            if (baseSalary > pretendingSalary) {
-
-                salesman.setCandidate(candidate.getName());
-                salesman.setMessage("O candidato foi selecionado para a vaga de Vendedor, LIGAR PARA O CANDIDATO");
-                salesman.setSalary(candidate.getSalary());
-                salesman.setContactAttempt(gettingInTouch(candidate.getPhone()));
-                salesman.setVacancyCode("001");
-                salesman.setPercentPayablePerSold(10);
-                selectedCandidate = salesman;
-
-
-
-            } else if (baseSalary == pretendingSalary) {
-
-                salesman.setCandidate(candidate.getName());
-                salesman.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
-                salesman.setSalary(candidate.getSalary());
-                salesman.setVacancyCode("001");
-                salesman.setContactAttempt(gettingInTouch(candidate.getPhone()));
-                selectedCandidate = salesman;
-
-            } else {
-
-                salesman.setCandidate(candidate.getName());
-                salesman.setVacancyCode("001");
-                salesman.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
-                selectedCandidate = salesman;
-
-            }
+            selectedCandidate = checkingFuncition(new Salesman(), baseSalary, pretendingSalary ,candidate);
 
         }
 
@@ -188,5 +128,42 @@ public class CandidateService {
 
     boolean answer(){
         return new Random().nextInt(3) == 1;
+    }
+
+    public SelectedCandidate checkingFuncition(SelectedCandidate selectedCandidate, Double baseSalary ,Double pretendingSalary, Candidate candidate){
+
+        if (baseSalary > pretendingSalary && (selectedCandidate instanceof Manager  || selectedCandidate instanceof Salesman)) {
+
+            selectedCandidate.setCandidate(candidate.getName());
+            selectedCandidate.setMessage("O candidato foi selecionado para a vaga de " + selectedCandidate.getClass().getSimpleName() +", LIGAR PARA O CANDIDATO");
+            selectedCandidate.setSalary(candidate.getSalary());
+            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
+            selectedCandidate.setVacancyCode("001");
+            if(selectedCandidate instanceof Manager manager) {
+                manager.setComission(1200);
+            }else {
+                Salesman salesman = (Salesman) selectedCandidate;
+                salesman.setPercentPayablePerSold(10);
+            }
+
+
+        } else if (baseSalary.equals(pretendingSalary)) {
+
+            selectedCandidate.setCandidate(candidate.getName());
+            selectedCandidate.setMessage("LIGAR PARA O CANDIDATO COM CONTRA PROPOSTA");
+            selectedCandidate.setSalary(candidate.getSalary());
+            selectedCandidate.setVacancyCode("001");
+            selectedCandidate.setContactAttempt(gettingInTouch(candidate.getPhone()));
+
+        } else {
+
+            selectedCandidate.setCandidate(candidate.getName());
+            selectedCandidate.setVacancyCode("001");
+            selectedCandidate.setMessage("AGUARDANDO O RESULTADO DOS DEMAIS CANDIDADOS");
+
+        }
+
+        return selectedCandidate;
+
     }
 }
