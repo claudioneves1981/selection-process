@@ -48,18 +48,17 @@ public class CandidateService {
         List<Candidate> candidates = candidateRepository.searchByOptions(baseSalary, DDD);
         List<SelectedCandidate> selectedCandidatesList = new ArrayList<>();
 
-        for(Candidate candidate : candidates) {
+        candidates.forEach(candidate -> {
 
             if(candidate.getPhone().indexOf(DDD) == 1 || candidate.getPhone().indexOf(DDD) == 10 ) {
                 double pretendingSalary = candidate.getSalary();
                 SelectedCandidate selectedCandidate = checkingCandidate(pretendingSalary, candidate, baseSalary);
-                selectedCandidatesList.add(selectedCandidate);
-                if (selectedCandidatesList.size() == 5) {
-                    break;
+                if (selectedCandidatesList.size() < 5){
+                    selectedCandidatesList.add(selectedCandidate);
                 }
             }
+        });
 
-        }
 
         messageReturn(selectedCandidatesList);
         return selectedCandidatesList;
@@ -67,18 +66,18 @@ public class CandidateService {
 
         public void messageReturn(List<SelectedCandidate> selectedCandidateList){
 
+        selectedCandidateList.forEach(candidate -> {
 
-          for(SelectedCandidate candidate : selectedCandidateList){
+            if(candidate.getContactAttempt().getAwnser()){
 
-                if(candidate.getContactAttempt().getAwnser()){
+                candidate.getContactAttempt().setMessage("CONSEGUIMOS CONTATO  NA " + candidate.getContactAttempt().getAttempts() + " TENTATIVA");
 
-                    candidate.getContactAttempt().setMessage("CONSEGUIMOS CONTATO  NA " + candidate.getContactAttempt().getAttempts() + " TENTATIVA");
+            }else{
 
-                }else{
+                candidate.getContactAttempt().setMessage("NÃO CONSEGUIMOS CONTATO NÚMERO MAXIMO TENTATIVAS " + candidate.getContactAttempt().getAttempts() + " REALIZADAS");
+            }
 
-                    candidate.getContactAttempt().setMessage("NÃO CONSEGUIMOS CONTATO NÚMERO MAXIMO TENTATIVAS " + candidate.getContactAttempt().getAttempts() + " REALIZADAS");
-                }
-          }
+        });
 
      }
 
